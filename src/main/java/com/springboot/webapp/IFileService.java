@@ -9,5 +9,6 @@ public interface IFileService {
 
     HttpStatus saveFile(MultipartFile file, FileDto fileDto);
 
-    HttpStatus deleteFile(Long fileId);
+    HttpStatus deleteFile(Long id);
+
 }

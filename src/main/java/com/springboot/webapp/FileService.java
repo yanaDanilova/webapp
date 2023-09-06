@@ -26,11 +26,11 @@ public class FileService implements IFileService {
 
         String uploadDir = "storage";
         String fileName = file.getOriginalFilename();
-        String filePath = uploadDir + File.separator + fileName;
+        String filePath = uploadDir + "/"+ fileName;
 
         try {
             file.transferTo(Path.of(filePath));
-            FileEntity fileEntity = new FileEntity(1L, filePath, fileDto.getFileDescription());
+            FileEntity fileEntity = new FileEntity(fileDto.getUserId(), filePath, fileDto.getFileDescription());
             fileRepository.save(fileEntity);
             return HttpStatus.CREATED;
 
@@ -40,8 +40,8 @@ public class FileService implements IFileService {
     }
 
     @Override
-    public HttpStatus deleteFile(Long fileId) {
-        Optional<FileEntity> optionalFileEntity = fileRepository.findById(fileId);
+    public HttpStatus deleteFile(Long id) {
+        Optional<FileEntity> optionalFileEntity = fileRepository.findById(id);
 
         if (optionalFileEntity.isPresent()) {
             FileEntity fileEntity = optionalFileEntity.get();
@@ -50,8 +50,10 @@ public class FileService implements IFileService {
             fileToDelete.delete();
             fileRepository.delete(fileEntity);
             return HttpStatus.OK;
+        } else {
+            return HttpStatus.NOT_FOUND;
         }
-        return HttpStatus.BAD_REQUEST;
     }
+
 
 }

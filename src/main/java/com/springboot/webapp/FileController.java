@@ -23,14 +23,8 @@ public class FileController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFile(@PathVariable(name = "id") Long fileId) {
-        return new ResponseEntity<>(fileService.deleteFile(fileId));
+    public ResponseEntity<Void> deleteFile(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(fileService.deleteFile(id));
     }
-
-    @PostMapping("/say")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        return "okey!";
-    }
-
 
 }
