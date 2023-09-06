@@ -18,7 +18,7 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @RequestBody FileDto fileDto) {
+    public ResponseEntity<Void> uploadFile(@RequestParam("file") MultipartFile file, @RequestPart("fileDto") FileDto fileDto) {
         return new ResponseEntity<>(fileService.saveFile(file, fileDto));
     }
 
