@@ -9,6 +9,9 @@ public class FileDto {
         this.fileDescription = fileDescription;
     }
 
+    public FileDto() {
+    }
+
     public Long getUserId() {
         return userId;
     }

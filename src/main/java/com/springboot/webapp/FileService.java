@@ -48,6 +48,7 @@ public class FileService implements IFileService {
             String filePath = fileEntity.getFilePath();
             File fileToDelete = new File(filePath);
             fileToDelete.delete();
+            fileRepository.delete(fileEntity);
             return HttpStatus.OK;
         }
         return HttpStatus.BAD_REQUEST;
