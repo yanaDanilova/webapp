@@ -25,7 +25,7 @@ public class FileService implements IFileService {
     public HttpStatus saveFile(MultipartFile file, FileDto fileDto) {
 
         String uploadDir = "storage";
-        String fileName = file.getName();
+        String fileName = file.getOriginalFilename();
         String filePath = uploadDir + File.separator + fileName;
 
         try {
