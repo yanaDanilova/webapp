@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -30,7 +32,7 @@ public class FileService implements IFileService {
 
         try {
             file.transferTo(Path.of(filePath));
-            FileEntity fileEntity = new FileEntity(fileDto.getUserId(), filePath, fileDto.getFileDescription());
+            FileEntity fileEntity = new FileEntity(fileDto.getUserId(), filePath, fileDto.getFileDescription(),fileName);
             fileRepository.save(fileEntity);
             return HttpStatus.CREATED;
 
@@ -52,6 +54,34 @@ public class FileService implements IFileService {
             return HttpStatus.OK;
         } else {
             return HttpStatus.NOT_FOUND;
+        }
+    }
+
+    @Override
+    public HttpStatus updateFile(Long id, MultipartFile file, FileDto fileDto) {
+        this.deleteFile(id);
+        String uploadDir = "storage";
+        String fileName = file.getOriginalFilename();
+        String filePath = uploadDir + "/"+ fileName;
+
+        try {
+            file.transferTo(Path.of(filePath));
+            FileEntity fileEntity = new FileEntity(id, fileDto.getUserId(), filePath, fileDto.getFileDescription(),fileName);
+            fileRepository.save(fileEntity);
+            return HttpStatus.CREATED;
+
+        } catch (IOException e) {
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
+    public List<FileDtoToList> getAllFiles(Long userId){
+        Optional<List<FileEntity>> optionalFileDtoList =  fileRepository.findAllByUserId(userId);
+        if(optionalFileDtoList.isPresent()){
+            List<FileEntity> fileEntityList = optionalFileDtoList.get();
+            return fileEntityList.stream().map(fileEntity -> new FileDtoToList(fileEntity.getFileName(),fileEntity.getFileDescription(), fileEntity.getFilePath())).collect(Collectors.toList());
+        }else{
+            throw new RuntimeException("User with id "+ userId + " is not found");
         }
     }
 

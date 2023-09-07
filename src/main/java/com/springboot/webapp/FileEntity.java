@@ -16,15 +16,40 @@ public class FileEntity {
 
     private String fileDescription;
 
+    private String fileName;
+
     public FileEntity() {
     }
 
-    public FileEntity(Long userId, String filePath, String fileDescription) {
+
+    public FileEntity(Long userId, String filePath, String fileDescription, String fileName) {
+        this.userId = userId;
+        this.filePath = filePath;
+        this.fileDescription = fileDescription;
+        this.fileName = fileName;
+    }
+    public FileEntity(Long id,Long userId, String filePath, String fileDescription, String fileName) {
+        this.id = id;
+        this.userId = userId;
+        this.filePath = filePath;
+        this.fileDescription = fileDescription;
+        this.fileName = fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public FileEntity(Long id, Long userId, String filePath, String fileDescription) {
+        this.id = id;
         this.userId = userId;
         this.filePath = filePath;
         this.fileDescription = fileDescription;
     }
-
 
     public Long getId() {
         return id;

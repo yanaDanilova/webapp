@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public interface IFileService {
 
@@ -11,4 +13,10 @@ public interface IFileService {
 
     HttpStatus deleteFile(Long id);
 
+
+    HttpStatus updateFile(Long id, MultipartFile file, FileDto fileDto);
+
+
+
+    List<FileDtoToList> getAllFiles(Long userId);
 }
