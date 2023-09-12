@@ -1,18 +1,42 @@
 package com.springboot.webapp;
 
-public class FileDtoToList {
+public class FileDtoFull {
+    private Long fileId;
+    private Long userId;
     private String fileName;
     private String fileDescription;
 
     private String location;
 
-    public FileDtoToList() {
+
+
+
+    public FileDtoFull() {
     }
 
-    public FileDtoToList(String fileName, String fileDescription, String location) {
+
+    public FileDtoFull(Long fileId, Long userId, String fileName, String fileDescription, String location) {
+        this.fileId = fileId;
+        this.userId = userId;
         this.fileName = fileName;
         this.fileDescription = fileDescription;
         this.location = location;
+    }
+
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getFileId() {
+        return fileId;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 
     public String getFileName() {

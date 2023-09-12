@@ -18,5 +18,5 @@ public interface IFileService {
 
 
 
-    List<FileDtoToList> getAllFiles(Long userId);
+    List<FileDtoFull> getAllFiles(Long userId);
 }

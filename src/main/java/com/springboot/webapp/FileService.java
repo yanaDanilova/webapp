@@ -59,27 +59,39 @@ public class FileService implements IFileService {
 
     @Override
     public HttpStatus updateFile(Long id, MultipartFile file, FileDto fileDto) {
-        this.deleteFile(id);
-        String uploadDir = "storage";
-        String fileName = file.getOriginalFilename();
-        String filePath = uploadDir + "/"+ fileName;
 
-        try {
-            file.transferTo(Path.of(filePath));
-            FileEntity fileEntity = new FileEntity(id, fileDto.getUserId(), filePath, fileDto.getFileDescription(),fileName);
-            fileRepository.save(fileEntity);
-            return HttpStatus.CREATED;
+        Optional<FileEntity> optionalFileEntity = fileRepository.findById(id);
 
-        } catch (IOException e) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
+        if (optionalFileEntity.isPresent()) {
+            FileEntity fileEntityToDelete = optionalFileEntity.get();
+            String filePathToDelete = fileEntityToDelete.getFilePath();
+            File fileToDelete = new File(filePathToDelete);
+            fileToDelete.delete();
+            String uploadDir = "storage";
+            String fileName = file.getOriginalFilename();
+            String filePath = uploadDir + "/"+ fileName;
+            try {
+                file.transferTo(Path.of(filePath));
+                FileEntity fileEntity = new FileEntity(id, fileDto.getUserId(), filePath, fileDto.getFileDescription(),fileName);
+                fileRepository.save(fileEntity);
+                return HttpStatus.OK;
+
+            } catch (IOException e) {
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+        }else {
+            return HttpStatus.NOT_FOUND;
         }
+
+
+
     }
 
-    public List<FileDtoToList> getAllFiles(Long userId){
+    public List<FileDtoFull> getAllFiles(Long userId){
         Optional<List<FileEntity>> optionalFileDtoList =  fileRepository.findAllByUserId(userId);
         if(optionalFileDtoList.isPresent()){
             List<FileEntity> fileEntityList = optionalFileDtoList.get();
-            return fileEntityList.stream().map(fileEntity -> new FileDtoToList(fileEntity.getFileName(),fileEntity.getFileDescription(), fileEntity.getFilePath())).collect(Collectors.toList());
+            return fileEntityList.stream().map(fileEntity -> new FileDtoFull(fileEntity.getId(),fileEntity.getUserId(),fileEntity.getFileName(),fileEntity.getFileDescription(), fileEntity.getFilePath())).collect(Collectors.toList());
         }else{
             throw new RuntimeException("User with id "+ userId + " is not found");
         }
