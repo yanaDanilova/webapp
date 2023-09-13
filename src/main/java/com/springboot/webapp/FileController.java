@@ -1,6 +1,6 @@
 package com.springboot.webapp;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/files")
-@Tag(name = "FileController", description = "Api for upload file")
 public class FileController {
 
     private final IFileService fileService;
